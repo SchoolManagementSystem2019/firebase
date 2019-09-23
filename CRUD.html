@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Insert and update data</title>
+	
+	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js">
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-database.js">
+	</script>
+	<script>
+	  // Your web app's Firebase configuration
+	  var firebaseConfig = {
+	    apiKey: "AIzaSyDZ7QaQ-ADbFcvO0xeMoH1GHMB7s79-oC4",
+	    authDomain: "crudapplication-2c6bb.firebaseapp.com",
+	    databaseURL: "https://crudapplication-2c6bb.firebaseio.com",
+	    projectId: "crudapplication-2c6bb",
+	    storageBucket: "",
+	    messagingSenderId: "66427749988",
+	    appId: "1:66427749988:web:3b06aa632b4991069c4171"
+	  };
+	  // Initialize Firebase
+	  firebase.initializeApp(firebaseConfig);
+	</script>
+</head>
+<body>
+	<table>
+		<tr>
+			<td>ID</td>
+			<td><input type="text" id="user_id"></td>
+		</tr>
+		<tr>
+			<td>Name</td>
+			<td><input type="text" id="user_name"></td>
+		</tr>
+		<tr><td></td></tr>
+		<tr>
+			<td><button onclick="saveData()">Save Data</button>
+			</td>
+			<td><button onclick="updateData()">Update Data</button>
+			</td>
+			<td><button onclick="deleteData()">Delete Data</button>
+			</td>
+			<td><button onclick="reloadPage()">Reload Data</button>
+			</td>
+		</tr>
+	</table>
+
+
+	<script>
+		var firebaseref = firebase.database().ref('/crud/');
+		function saveData() {
+			var id = document.getElementById('user_id').value;
+			var name = document.getElementById('user_name').value;
+			var uid = firebase.database().ref().child('crud').push().key;
+			var data = {
+				id:uid,
+				name:name
+			}
+			var updates = {};
+			updates['/crud/' + uid] = data;
+			firebase.database().ref().update(updates);
+			alert("Data successfully inserted....!!");
+		}
+		function updateData() {
+			var id = document.getElementById('user_id').value;
+			var name = document.getElementById('user_name').value;
+			var data = {
+				id:id,
+				name:name
+			}
+			var updates = {};
+			updates['/crud/' + id] = data;
+			firebase.database().ref().update(updates);
+			alert("Data successfully Updated....!!");
+		}
+		function deleteData() {
+			var id = document.getElementById('user_id').value;
+			var name = document.getElementById('user_name').value;
+			var data = {
+				id:id,
+				name:name
+			}
+			firebase.database().ref().remove;
+			alert("Data successfully Deleted....!!");
+		}
+		// function reloadPage() {
+		// 	window.location.href;
+		// }
+	</script>
+</body>
+</html>
