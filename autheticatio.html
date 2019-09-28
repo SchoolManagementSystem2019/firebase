@@ -2,11 +2,9 @@
 <html>
 <head>
 	<title>Authentication</title>
-
 	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-database.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-auth.js">
-	</script>
+	<script src="https://www.gstatic.com/firebasejs/6.6.2/firebase-auth.js"></script>
+	<script src="jquery.js"></script>
 	<script>
 	  // Your web app's Firebase configuration
 	  var firebaseConfig = {
@@ -22,48 +20,76 @@
 	  firebase.initializeApp(firebaseConfig);
 	</script>
 </head>
-<body>
-	<table>
-		<form>
-			<tr>
-				<td>Email Address</td>
-				<td><input type="email" id="email"></td>
-			</tr>
-			<tr>
-				<td>Password</td>
-				<td><input type="password" id="pswd"></td>
-			</tr>
-			<tr>
-				<td><button onclick="signUp()">Sign Up</button></td>
-			</tr>
-		</form>
-	</table>
+<body>  
+		<label>Email Address</label>
+		<input type="email" id="email">
+		<br>
+		<label>Password</label>
+		<input type="password" id="pswd">
+		<br>
+		<button onclick="signUp()">Sign Up</button>
+		<button onclick="login()">Log In</button>
+
+		<div id="try"></div>
 
 	<script>
-		var email = document.getElementById('email').value;
-		var password = document.getElementById('pswd').value;
-		console.log(email+"  "+password);
-		firebase.auth().createUserWithEmailAndPassword(email, password)
-	    .catch(function signUp(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			if (errorCode == 'auth/weak-password') {
-				alert('The password is too weak.');
-			} else {
-				alert(errorMessage);
-			}
-		  	console.log(error);
-		});
+		function signUp(){
+			var email = document.getElementById('email').value;
+			var password = document.getElementById('pswd').value;
 
-		// var email = document.getElementById('email').value;
-		// var password = document.getElementById('pswd').value;
-		// firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-		//   	// Handle Errors here.
-		//  	var errorCode = error.code;
-		//  	var errorMessage = error.message;
-		//   // ...
-		// });
+			firebase.auth().createUserWithEmailAndPassword(email,password).catch(function(error){
+				var errorMsg = error.message;
+				alert(errorMsg);
+			});
+			alert("Registered...!!");
+		}
+			
+
+		function login() {
+			var email = document.getElementById('email').value;
+			var password = document.getElementById('pswd').value;
+			firebase.auth().signInWithEmailAndPassword(email,password).catch(function(error){
+				var errorMsg = error.message;
+				alert("errorMsg");
+			});
+			sessionStorage.setItem("position","signin");
+			var getItems = document.getElementById('try').innerHTML = sessionStorage.getItem("position");
+			// alert(getItems);
+			if (email !== undefined && password !== undefined) {
+				email = getItems;
+				password = getItems;
+			}else{
+				email = undefined;
+				password = undefined;
+			}
+
+			if (email == getItems && password == getItems) {
+				window.location.href = "welcome.html";
+			}else if (email !== getItems && password !== getItems) {
+				window.location.href="index.html"
+				alert("Log in First..!");
+			}else{
+				alert("Warning...!!!");
+			}
+			
+		}
+		
+
+			// $(document).ready(function(){
+			// 	$("#login").click(function(){
+			// 		$("#try").load(function() {
+			// 			sessionStorage.setItem('status','loggedIn') 
+			// 		})
+			// 		if (sessionStorage.getItem('status') != null){
+			// 		    window.location.href = "welcome.html";	
+			// 		}
+			// 		else{
+			// 		    alert("logIn Firs..!!")
+			// 		}	
+			// 	})
+			// })
+
+		
 	</script>
 </body>
 </html>
